@@ -1,6 +1,9 @@
 <?php
-  class SQL{
 
+use LDAP\Result;
+
+  require_once('objects/obj.result.php');
+  class SQL{
     function connect(){
       if(is_dev()){
         $servername="localhost";
@@ -22,16 +25,9 @@
     }
     public function get($sql){
       $conn = $this->connect();
-      $result = $conn->query($sql);   
-      $ret=[];
-      while ($row = $result->fetch_assoc()) {
-        array_push($ret,(object)$row);
-      }
-      $conn->close(); 
-      if(count($ret)==1){
-        $ret=$ret[0];
-      }
-      return (object)$ret;
+      $result=new \Result($conn->query($sql));
+      $conn->close();
+      return $result;
     }
     public function getArray($sql){
       $conn = $this->connect();

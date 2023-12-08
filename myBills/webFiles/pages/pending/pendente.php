@@ -1,7 +1,5 @@
 <?php 
-
 require_once('class/include.php');require_once('includes/generalFunctions.php');?>
-
 <html lang="en"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,11 +43,15 @@ require_once('class/include.php');require_once('includes/generalFunctions.php');
   <body class="blue" cz-shortcut-listen="true">
     <div id="app">
       <?php 
+        $today=date("d");
+        $limit=23;
         
-        $headValue=SQL()->get("SELECT SUM(cost) as sum FROM `bills`")->sum;
-        $headDisplay="Totale:$".$headValue;
+        $where="(`day` > {$today} OR `day` <= {$limit})";
+        
+        $headValue=SQL()->get("SELECT SUM(cost) as sum FROM `bills` WHERE {$where}")->sum;
+        $headDisplay="Pendente:$".$headValue;
         require_once("includes/menu.php");
-        $bills = SQL()->get("SELECT * FROM bills  ORDER BY `day` ASC");
+        $bills = SQL()->get("SELECT * FROM bills WHERE {$where}  ORDER BY `day` ASC");
       ?>
       <div class="container" id="container" style="margin-top:70px">
         <?php
