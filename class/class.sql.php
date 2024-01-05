@@ -51,6 +51,61 @@
       $conn->close(); 
       return $ret;
     }
+    public function getRow($sql){
+      $conn = $this->connect();
+      $result = $conn->query($sql);
+      while ($row = $result->fetch_assoc()) {
+        $_row=[];
+        foreach ($row as $key => $value) {
+          if(is_numeric($value)){
+            $_row[$key]=(int)$value;
+          }else{
+            $_row[$key]=$value;
+          }
+        }
+      }
+      $conn->close(); 
+      return $_row;
+    }
+    public function update($table, $values, $where){$set=[];
+      $conn = $this->connect();
+      foreach ($values as $key => $value){
+        if(_is_double($value)){
+          $set[]="{$key}={$value}";
+        }else{
+          $set[]="{$key}='{$value}'";
+        }
+      }
+      $_set=implode(',', $set);
+      $sql="UPDATE {$table} SET {$_set} WHERE {$where}";
+      $result = $conn->query($sql);
+      $conn->close(); 
+      return ['result'=>$result, 'sql'=>$sql];
+    }
+    public function insert($table, $values){$set=$_values=[];
+      $conn = $this->connect();
+      foreach ($values as $key => $value){
+        if(_is_double($value)){
+          $_values[]="{$value}";
+        }else{
+          $_values[]="'{$value}'";
+        }
+        $set[]=$key;
+      }
+      $_set=implode(',', $set);
+      $__values=implode(',', $_values);
+      $sql="INSERT INTO {$table} ({$_set}) VALUES ({$__values})";
+      $result = $conn->query($sql);
+      $conn->close(); 
+      return ['result'=>$result, 'sql'=>$sql];
+    }    
+    public function delete($table, $where){
+      $conn = $this->connect();
+      $sql="DELETE FROM {$table} WHERE {$where}";
+      $result = $conn->query($sql);
+      $conn->close(); 
+      return ['result'=>$result, 'sql'=>$sql];
+    }
   } 
   
 ?>

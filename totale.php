@@ -1,6 +1,6 @@
 <?php 
 
-require_once('class/include.php');require_once('includes/generalFunctions.php');?>
+require_once('includes.php');?>
 
 <html lang="en"><head>
   <meta charset="utf-8">
@@ -48,8 +48,8 @@ require_once('class/include.php');require_once('includes/generalFunctions.php');
         
         $headValue=SQL()->get("SELECT SUM(cost) as sum FROM `bills`")->sum;
         $headDisplay="Totale:$".$headValue;
-        require_once("includes/menu.php");
-        $bills = SQL()->get("SELECT * FROM bills  ORDER BY `day` ASC");
+        require_once("templates/menu.php");
+        $bills = SQL()->get("SELECT * FROM bills ORDER BY `day` ASC");
       ?>
       <div class="container" id="container" style="margin-top:70px">
         <?php

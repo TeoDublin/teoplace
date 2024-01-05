@@ -1,5 +1,5 @@
 <?php 
-require_once('class/include.php');require_once('includes/generalFunctions.php');?>
+require_once('includes.php');?>
 <html lang="en"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,7 +50,7 @@ require_once('class/include.php');require_once('includes/generalFunctions.php');
         
         $headValue=SQL()->get("SELECT SUM(cost) as sum FROM `bills` WHERE {$where}")->sum;
         $headDisplay="Pendente:$".$headValue;
-        require_once("includes/menu.php");
+        require_once("templates/menu.php");
         $bills = SQL()->get("SELECT * FROM bills WHERE {$where}  ORDER BY `day` ASC");
       ?>
       <div class="container" id="container" style="margin-top:70px">

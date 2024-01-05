@@ -1,4 +1,4 @@
-<?php require_once('class/include.php');require_once('includes/generalFunctions.php');?>
+<?php require_once('includes.php');?>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -67,7 +67,7 @@
             <?php 
                 $headValue=SQL()->get("SELECT SUM(cost) as sum FROM `bills`")->sum;
                 $headDisplay="Totale:$".$headValue;
-                require_once("includes/menu.php");
+                require_once("templates/menu.php");
                 $bills = SQL()->get("SELECT * FROM bills");
             ?>
             <div class="container" style="margin-top:70px">
