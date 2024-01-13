@@ -1,7 +1,5 @@
 <?php 
-
 require_once('includes.php');?>
-
 <html lang="en"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,16 +43,19 @@ require_once('includes.php');?>
   <body class="blue" cz-shortcut-listen="true">
     <div id="app">
       <?php 
-        
-        $headValue=SQL()->get("SELECT SUM(cost) as sum FROM `bills`")->sum;
-        $headDisplay="Totale:$".$headValue;
+        $today=date("d");
+        $limit=add_days_working_end(30, SQL()->getCol("SELECT date FROM payment_date WHERE id=1", 'date'),'d');
+        $where="(`day` > {$today} AND `day` <= {$limit})";
+        $headValue=SQL()->getCol("SELECT SUM(cost) as sum FROM `bills` WHERE {$where}", 'sum');
+        echo "here:".$headValue;
+        $headDisplay="Pending:$".$headValue;
         require_once("templates/menu.php");
-        $bills = SQL()->get("SELECT * FROM bills ORDER BY `day` ASC");
+        $bills = SQL()->get("SELECT * FROM bills WHERE {$where} ORDER BY `day` ASC");
       ?>
       <div class="container" id="container" style="margin-top:70px">
         <?php
             foreach($bills as $bill){?>
-                <div class="row fade-right bl-row" row-id="<?php echo $bill->id;?>" row-value=<?php echo $bill->cost;?>>
+                <div class="row fade-right bl-row" row-id="<?php echo $bill->id;?>" row-value="<?php echo $bill->cost;?>">
                     <div class="col-4 bl-blue"><?php echo bills_day($bill->day);?></div>
                     <div class="col-8"><?php echo '$'.$bill->cost;?></div>
                     <div class="container">

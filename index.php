@@ -1,3 +1,3 @@
 <?php
-    require_once('totale.php');
+    require_once('paymentCount.php');
 ?>

@@ -4,83 +4,79 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style> 
-    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap'); 
-    .blue{ 
-        font-family: 'Quicksand', sans-serif; 
-        background: linear-gradient( to right, lightgray 0%, white 100%); 
-        color: white; 
-    } 
-    .tw{
-        color:white!important;
-    }
-    div.bl-row{
-        font-size: 25px; 
-        background-color: white; 
-        border: 0.5px solid black; 
-        border-radius: 5px; 
-        margin: 0.5px 0.5px 5px; 
-        padding: 5px; 
-        color: black; 
-        text-align: center;
-    }
-    div.bl-row:hover{
-        background-color: #8193b3;
-    }
-    div.bl-blue{
-        background-color:#a5b5cf;
-        border:0.5px solid #a5b5cf;
-        border-radius:3px;    
-    }
-    div.bl-label{
-        font-size:14px; 
-        padding-top:5px;    
-    }
-    div.form-edit{
-        width: 100%;
-    }
-    div.form-edit-inside{
-        padding: 50px 30px 20px 30px;
-    }
-    div.form-edit-close{
-        position: absolute;
-        right: 0;
-        top: 0;        
-        color: black;
-        padding: 15px;
-    }
-    button.btn-lg{
-        width: 100%;
-    }
-    .floating-button {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #ccc;
-        border: none;
-        padding: 10px;
-        border-radius: 50%;
-        cursor: pointer;
-
-    }
-    .floating-button i {
-        color: white;       
-    }    
-    div.cover-background{
-        position: absolute;
-        left: 0;
-        top: 0;
-        z-index: 9999;
-        width: 100%;
-        height: 100%;
-        background-color: white;
-    }
-    div.cover-inside{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-    }
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap'); 
+        .blue{ 
+            font-family: 'Quicksand', sans-serif; 
+            background: linear-gradient( to right, lightgray 0%, white 100%); 
+            color: white; 
+        } 
+        .tw{
+            color:white!important;
+        }
+        div.bl-row{
+            font-size: 25px; 
+            background-color: white; 
+            border: 0.5px solid black; 
+            border-radius: 5px; 
+            margin: 0.5px 0.5px 5px; 
+            padding: 5px; 
+            color: black; 
+            text-align: center;
+        }
+        div.bl-row:hover{
+            background-color: #8193b3;
+        }
+        div.bl-blue{
+            background-color:#a5b5cf;
+            border:0.5px solid #a5b5cf;
+            border-radius:3px;    
+        }
+        div.bl-label{
+            font-size:14px; 
+            padding-top:5px;    
+        }
+        div.form-edit{
+            width: 100%;
+        }
+        div.form-edit-inside{
+            padding: 50px 30px 20px 30px;
+        }
+        div.form-edit-close{
+            position: absolute;
+            right: 0;
+            top: 0;        
+            color: black;
+            padding: 15px;
+        }
+        button.btn-lg{
+            width: 100%;
+        }
+        div.floating-button {
+            position: fixed;
+            bottom: 10px;
+            right: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .floating-button i {
+            color: white;       
+        }    
+        div.cover-background{
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 9999;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+        div.cover-inside{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
     </style> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
@@ -90,25 +86,28 @@
 </head>
 <body class="blue" cz-shortcut-listen="true">
     <div id="app">
-        <?php require_once("templates/menu.php");?>
+        <?php 
+            $headValue = $headDisplay = "Change bills";
+            require_once("templates/menu.php");
+        ?>
         <div class="container" id="container" style="margin-top:70px">
             <?php $bills = SQL()->get("SELECT * FROM bills  ORDER BY `day` ASC");?>
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
+                        <th scope="col" hidden=true>#</th>
                         <th scope="col">day</th>
                         <th scope="col">name</th>
                         <th scope="col">billsGroup</th>
                         <th scope="col">cost</th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
+                        <th scope="col">#</th>
+                        <th scope="col">#</th>
                     </tr>
                 </thead>
                 <tbody><?php
                     foreach($bills as $row){
                         echo "<tr>
-                                <th scope='row'>{$row->id}</th>
+                                <th scope='row' hidden=true>{$row->id}</th>
                                 <td>{$row->day}</td>
                                 <td>{$row->name}</td>
                                 <td>{$row->billsGroup}</td>
@@ -155,13 +154,12 @@
                     </div>      
                 </div>             
             </div>            
-            <div class="add">
-                <button class="btn btn-primary floating-button" data-toggle="tooltip" data-placement="left" title="Add">
+            <div class="add floating-button">
+                <button class="btn btn-primary " data-toggle="tooltip" data-placement="left" title="Add">
                     <i class="bi bi-database-add">Add</i>
                 </button>
             </div>
-            
-            <script>          
+            <script>
                 function editForm(id){
                     loadingGif();
                     $.ajax({
@@ -251,7 +249,9 @@
                 });
 
             </script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
         </div>
     </div>
+
 </body>
 </html>
