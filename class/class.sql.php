@@ -36,9 +36,13 @@
       while ($row = $result->fetch_assoc()) {
         $_row=[];
         foreach ($row as $key => $value) {
-          if(is_numeric($value)){
+          if(_is_double($value)){
+            $_row[$key]=doubleval($value);
+          }
+          elseif(is_numeric($value)){
             $_row[$key]=(int)$value;
-          }else{
+          }
+          else{
             $_row[$key]=$value;
           }
         }
@@ -53,9 +57,13 @@
       while ($row = $result->fetch_assoc()) {
         $_row=[];
         foreach ($row as $key => $value) {
-          if(is_numeric($value)&!_is_double($value)){
+          if(_is_double($value)){
+            $_row[$key]=doubleval($value);
+          }
+          elseif(is_numeric($value)){
             $_row[$key]=(int)$value;
-          }else{
+          }
+          else{
             $_row[$key]=$value;
           }
         }

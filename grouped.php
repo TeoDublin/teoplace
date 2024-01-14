@@ -1,8 +1,7 @@
 <?php require_once('includes.php');?>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?php repoPrintRecursive(['heads'=>['default','highcharts']]);?>
         <style> 
             @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap'); 
             .highcharts-figure,
@@ -52,82 +51,83 @@
                 min-width: 50px;
             }
         </style> 
-
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-        <title>My Bills</title>
-        <script src="https://code.highcharts.com/highcharts.js"></script>
-        <script src="https://code.highcharts.com/modules/exporting.js"></script>
-        <script src="https://code.highcharts.com/modules/export-data.js"></script>
-        <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-
     </head>
     <body class="blue" cz-shortcut-listen="true">
         <div id="app">
             <?php 
-                $headValue=SQL()->get("SELECT SUM(cost) as sum FROM `bills`")->sum;
-                $headDisplay="Totale:$".$headValue;
+                $headValue=SQL()->getCol("SELECT SUM(cost) as sum FROM `bills`", 'sum');
+                $headDisplay="Total:$".$headValue;
                 require_once("templates/menu.php");
                 $bills = SQL()->get("SELECT * FROM bills");
             ?>
             <div class="container" style="margin-top:70px">
                 <figure class="highcharts-figure">
-                <div id="container"></div>
-
+                    <div id="container"></div>
                 </figure>
             </div>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+            <?php repoPrint('footers','default');?>
             <script>
-Highcharts.chart('container', {
-    chart: {
-        type: 'pie'
-    },
-    title: {
-        text: null
-    },
-    credits: {
-        enabled: false
-    },
-    plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-                enabled: false
-            },
-            showInLegend: true,
-            point: {
-                events: {
-                    click: function () {
-                        this.remove();
-                    }
+                function recalcTotal(e){
+                    var headValue = $(document).find('a.navbar-brand').attr('head-value');
+                    var rowValue=e.y;
+                    var result =(headValue-rowValue);
+                    result = result.toFixed(2);
+                    $(document).find('a.navbar-brand').attr('head-value',result);
+                    $(document).find('a.navbar-brand').text("Total:$"+result);
+                    $(this).remove();                 
                 }
-            }
-        }
-    },
-    legend: {
-        align: 'right',
-        verticalAlign: 'middle',
-        layout: 'vertical',
-        itemMarginTop: 10,
-        itemMarginBottom: 10,
-        itemStyle: {
-            fontSize: '14px',
-            fontWeight: 'normal'
-        },
-        labelFormatter: function () {
-            return this.name + ': ' + this.y + '(' + Highcharts.numberFormat(this.percentage, 1) + '%)';
-        }
-    },
-    series: [{
-        data: 
-            <?php
-                $result=SQL()->getArray("SELECT `billsGroup` as `name`, SUM(`cost`) as `y` FROM `bills` GROUP BY `billsGroup` ORDER BY SUM(`cost`) DESC");
-                echo json_encode($result);
-            ?>
-        
-    }]
-});            </script>
+                Highcharts.chart('container', {
+                    chart: {
+                        type: 'pie'
+                    },
+                    title: {
+                        text: null
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: false
+                            },
+                            showInLegend: true,
+                            point: {
+                                events: {
+                                    click: function () {
+                                        recalcTotal(this);
+                                        this.remove();
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        align: 'middle',
+                        verticalAlign: 'bottom',
+                        layout: 'horizontal',
+                        itemMarginTop: 10,
+                        itemMarginBottom: 0,
+                        itemStyle: {
+                            fontSize: '14px',
+                            fontWeight: 'normal'
+                        },
+                        labelFormatter: function () {
+                            return this.name + ': ' + this.y + '(' + Highcharts.numberFormat(this.percentage, 1) + '%)';
+                        }
+                    },
+                    series: [{
+                        data: 
+                            <?php
+                                $result=SQL()->getArray("SELECT `billsGroup` as `name`, SUM(`cost`) as `y` FROM `bills` GROUP BY `billsGroup` ORDER BY SUM(`cost`) DESC");
+                                echo json_encode($result);
+                            ?>
+                        
+                    }]
+                });   
+            </script>
         </div>
     </body>
 </html>          

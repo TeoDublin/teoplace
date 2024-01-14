@@ -16,9 +16,9 @@
     }
     function root_path($path='') {
         if(is_dev()){
-            $ret="http://localhost/".PROJECT.'/'.$path;
+            $ret=DEVPATH."/".PROJECT.'/'.$path;
         }else{
-            $ret= "https://teoplace.000webhostapp.com/{$path}";
+            $ret= PRODPATH."/{$path}";
         }
         return $ret;
     }
@@ -51,5 +51,24 @@
                 break;
         }
         return $modifiedDate->format($format);
+    }
+    function repoPrint($element, $fragment, $params=[]){
+        require(ABSROOTPATH."/repository/{$element}/{$fragment}.php");
+    }
+    function repoPrintRecursive($repo){
+        foreach ($repo as $element => $fragments) {     
+            if(is_array($fragments)){
+                foreach ($fragments as $maybeFragment => $maybeParams) {
+                    if(is_int($maybeFragment)){
+                        $fragment = $maybeParams; $params = [];
+                    }else{
+                        $fragment = $maybeFragment; $params = $maybeParams;
+                    }
+                    repoPrint($element, $fragment, $params);
+                }
+            }else{
+                repoPrint($element, $fragments);
+            }   
+        }
     }
 ?>

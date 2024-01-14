@@ -11,6 +11,7 @@
                 <li class="nav-item"><a class="nav-link" aria-current="page" href="paymentCount.php">paymentCount</a></li>
                 <li class="nav-item"><a class="nav-link" aria-current="page" href="grouped.php">Grouped</a></li>
                 <li class="nav-item"><a class="nav-link" aria-current="page" href="input.php">Input</a></li>
+                <li class="nav-item"><a class="nav-link" aria-current="page" href="goals.php">Goals</a></li>
             </ul>
         </div>
     </div>
