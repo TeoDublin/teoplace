@@ -105,6 +105,7 @@
                 function _update(){
                     loadingGif();
                     var date =  $('input.date').val();
+                    console.log(date);
                     $.ajax({
                         type: 'POST',
                         dataType: 'text',

@@ -42,7 +42,7 @@ require_once('includes.php');?>
       <?php 
         $today=date("d");
         $limit=add_days_working_end(30, SQL()->getCol("SELECT date FROM payment_date WHERE id=1", 'date'),'d');
-        $where="(`day` > {$today} AND `day` <= {$limit})";
+        $where="(`day` > {$today} OR `day` <= {$limit})";
         $headValue=SQL()->getCol("SELECT SUM(cost) as sum FROM `bills` WHERE {$where}", 'sum');
         echo "here:".$headValue;
         $headDisplay="Pending:$".$headValue;
