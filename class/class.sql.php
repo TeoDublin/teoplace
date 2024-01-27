@@ -1,6 +1,5 @@
 <?php
   class SQL{
-
     function connect(){
       if(is_dev()){
         $servername="localhost";
@@ -27,10 +26,7 @@
       while ($row = $result->fetch_assoc()) {
         array_push($ret,(object)$row);
       }
-      $conn->close(); 
-      if(count($ret)==1){
-        $ret=$ret[0];
-      }
+      $conn->close();
       return (object)$ret;
     }
     public function getArray($sql){
@@ -40,9 +36,13 @@
       while ($row = $result->fetch_assoc()) {
         $_row=[];
         foreach ($row as $key => $value) {
-          if(is_numeric($value)){
+          if(_is_double($value)){
+            $_row[$key]=doubleval($value);
+          }
+          elseif(is_numeric($value)){
             $_row[$key]=(int)$value;
-          }else{
+          }
+          else{
             $_row[$key]=$value;
           }
         }
@@ -57,9 +57,13 @@
       while ($row = $result->fetch_assoc()) {
         $_row=[];
         foreach ($row as $key => $value) {
-          if(is_numeric($value)){
+          if(_is_double($value)){
+            $_row[$key]=doubleval($value);
+          }
+          elseif(is_numeric($value)){
             $_row[$key]=(int)$value;
-          }else{
+          }
+          else{
             $_row[$key]=$value;
           }
         }
@@ -109,6 +113,5 @@
       $conn->close(); 
       return ['result'=>$result, 'sql'=>$sql];
     }
-  } 
-  
+  }
 ?>

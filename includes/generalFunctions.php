@@ -1,6 +1,6 @@
 <?php
     function is_dev(){
-        return true;
+        return preg_match("#C:#", ABSROOTPATH);
     }
     function current_url(){
         $ret = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
@@ -16,9 +16,9 @@
     }
     function root_path($path='') {
         if(is_dev()){
-            $ret="http://localhost/".PROJECT.'/'.$path;
+            $ret=DEVPATH."/".PROJECT.'/'.$path;
         }else{
-            $ret= "https://teoplace.000webhostapp.com/{$path}";
+            $ret= PRODPATH."/{$path}";
         }
         return $ret;
     }
@@ -36,5 +36,39 @@
         $date2 = new DateTime($date);
         $interval = $date2->diff($now);
         return (int)$interval->format('%a');        
+    }
+    function add_days_working_end($days, $date='', $format='Y-m-d'){
+        $originalDate = new DateTime($date);
+        $modifiedDate = clone $originalDate;
+        $modifiedDate->modify("+{$days} days");
+        $weekday = $modifiedDate->format('N');
+        switch ($weekday) {
+            case 6:
+                $modifiedDate->modify("+2 days");
+                break;
+            case 7:
+                $modifiedDate->modify("+1 days");
+                break;
+        }
+        return $modifiedDate->format($format);
+    }
+    function repoPrint($element, $fragment, $params=[]){
+        require(ABSROOTPATH."/repository/{$element}/{$fragment}.php");
+    }
+    function repoPrintRecursive($repo){
+        foreach ($repo as $element => $fragments) {     
+            if(is_array($fragments)){
+                foreach ($fragments as $maybeFragment => $maybeParams) {
+                    if(is_int($maybeFragment)){
+                        $fragment = $maybeParams; $params = [];
+                    }else{
+                        $fragment = $maybeFragment; $params = $maybeParams;
+                    }
+                    repoPrint($element, $fragment, $params);
+                }
+            }else{
+                repoPrint($element, $fragments);
+            }   
+        }
     }
 ?>

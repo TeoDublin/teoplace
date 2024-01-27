@@ -6,11 +6,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" aria-current="page" href="totale.php">Totale</a></li>
-                <li class="nav-item"><a class="nav-link" aria-current="page" href="pendente.php">Pendente</a></li>
+                <li class="nav-item"><a class="nav-link" aria-current="page" href="total.php">Total</a></li>
+                <li class="nav-item"><a class="nav-link" aria-current="page" href="pending.php">Pending</a></li>
                 <li class="nav-item"><a class="nav-link" aria-current="page" href="paymentCount.php">paymentCount</a></li>
-                <li class="nav-item"><a class="nav-link" aria-current="page" href="raggruppati.php">Raggruppati</a></li>
+                <li class="nav-item"><a class="nav-link" aria-current="page" href="grouped.php">Grouped</a></li>
                 <li class="nav-item"><a class="nav-link" aria-current="page" href="input.php">Input</a></li>
+                <li class="nav-item"><a class="nav-link" aria-current="page" href="goals.php">Goals</a></li>
             </ul>
         </div>
     </div>
