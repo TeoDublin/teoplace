@@ -67,6 +67,9 @@
       $conn->close(); 
       return $_row;
     }
+    public function getCol($sql, $col){
+      return $this->getRow($sql)[$col];
+    }
     public function update($table, $values, $where){$set=[];
       $conn = $this->connect();
       foreach ($values as $key => $value){

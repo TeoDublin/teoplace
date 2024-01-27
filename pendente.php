@@ -44,9 +44,9 @@ require_once('includes.php');?>
     <div id="app">
       <?php 
         $today=date("d");
-        $limit=23;
+        $limit=SQL()->getCol("SELECT DATE_FORMAT(date, '%d') as day FROM `payment_date`", 'day');
         
-        $where="(`day` > {$today} OR `day` <= {$limit})";
+        $where="(`day` > {$today} AND `day` <= {$limit})";
         
         $headValue=SQL()->get("SELECT SUM(cost) as sum FROM `bills` WHERE {$where}")->sum;
         $headDisplay="Pendente:$".$headValue;

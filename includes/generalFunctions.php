@@ -18,7 +18,7 @@
         if(is_dev()){
             $ret="http://localhost/".PROJECT.'/'.$path;
         }else{
-            $ret= str_replace('\\','/',ABSROOTPATH.'/'.$path);
+            $ret= "https://teoplace.000webhostapp.com/{$path}";
         }
         return $ret;
     }
@@ -30,5 +30,11 @@
             }
         }
         return $ret;
+    }
+    function now_diff($date){
+        $now = new DateTime();
+        $date2 = new DateTime($date);
+        $interval = $date2->diff($now);
+        return (int)$interval->format('%a');        
     }
 ?>
